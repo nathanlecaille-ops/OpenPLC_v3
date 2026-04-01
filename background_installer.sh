@@ -219,6 +219,7 @@ User=root
 Group=root
 WorkingDirectory=$OPENPLC_DIR
 ExecStart=$OPENPLC_DIR/start_openplc.sh
+Environment="WEBSERVER_IP=0.0.0.0"
 
 [Install]
 WantedBy=multi-user.target

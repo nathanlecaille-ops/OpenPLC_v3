@@ -2705,7 +2705,8 @@ def run_https():
             sys.exit(1)
         
         context = (CERT_FILE, KEY_FILE)
-        app_restapi.run(debug=False, host='0.0.0.0', threaded=True, port=8443, ssl_context=context)
+        webserver_ip = os.getenv("WEBSERVER_IP", "0.0.0.0")
+        app_restapi.run(debug=False, host=webserver_ip, threaded=True, port=8443, ssl_context=context)
 
     except KeyboardInterrupt as e:
         print(f"Exiting OpenPLC Webserver...{e}")
@@ -2757,7 +2758,8 @@ def run_http():
                 monitor.parse_st(openplc_runtime.project_file)
 
             try:
-                app.run(debug=False, host='0.0.0.0', threaded=True, port=8080)
+                webserver_ip = os.getenv("WEBSERVER_IP", "0.0.0.0")
+                app.run(debug=False, host=webserver_ip, threaded=True, port=8080)
             except KeyboardInterrupt as e:
                 print(f"Exiting OpenPLC Webserver...{e}")
                 openplc_runtime.stop_runtime()

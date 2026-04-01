@@ -109,8 +109,21 @@ int createSocket(uint16_t port)
     //Initialize Server Struct
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = INADDR_ANY;
     server_addr.sin_port = htons(port);
+
+    const char *ip = getenv("WEBSERVER_IP");
+
+    if (ip != NULL)
+    {
+        if (inet_pton(AF_INET, ip, &server_addr.sin_addr) != 1) {
+            perror("inet_pton");
+            exit(1);
+        }
+    }
+    else
+    {
+        server_addr.sin_addr.s_addr = INADDR_ANY;
+    }
 
     //Bind socket
     if (bind(socket_fd,(struct sockaddr *)&server_addr,sizeof(server_addr)) < 0)
@@ -268,7 +281,7 @@ void *handleConnections(void *arguments)
 // creates an infinite loop to listen and parse the messages sent by the
 // clients
 //-----------------------------------------------------------------------------
-void startServer(uint16_t port, int protocol_type)
+void startServer(char * ip, uint16_t port, int protocol_type)
 {
     char log_msg[1000];
     int socket_fd, client_fd;

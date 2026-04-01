@@ -85,7 +85,19 @@ int createUDPSocket(int port)
     bzero((char *) &server_addr, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
-    server_addr.sin_addr.s_addr = INADDR_ANY;
+    const char *ip = getenv("WEBSERVER_IP");
+
+    if (ip != NULL)
+    {
+        if (inet_pton(AF_INET, ip, &server_addr.sin_addr) != 1) {
+            perror("inet_pton");
+            exit(1);
+        }
+    }
+    else
+    {
+        server_addr.sin_addr.s_addr = INADDR_ANY;
+    }
 
     //Bind socket
     if (bind(socket_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
