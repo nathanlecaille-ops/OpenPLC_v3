@@ -282,7 +282,7 @@ void *handleConnections(void *arguments)
 // creates an infinite loop to listen and parse the messages sent by the
 // clients
 //-----------------------------------------------------------------------------
-void startServer(char * ip, uint16_t port, int protocol_type)
+void startServer(uint16_t port, int protocol_type)
 {
     char log_msg[1000];
     int socket_fd, client_fd;
