@@ -1,5 +1,6 @@
 import time, threading
 from struct import *
+import os
 from pymodbus.client.sync import ModbusTcpClient
 
 class debug_var():
@@ -140,7 +141,8 @@ def start_monitor(modbus_port_cfg):
     
     if (monitor_active != True):
         monitor_active = True
-        mb_client = ModbusTcpClient('127.0.0.1', port=modbus_port_cfg)
+        local_ip = os.getenv("WEBSERVER_IP", '127.0.0.1')
+        mb_client = ModbusTcpClient(local_ip, port=modbus_port_cfg)
         
         modbus_monitor()
 
