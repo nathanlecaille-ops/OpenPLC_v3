@@ -1420,7 +1420,8 @@ def modbus_edit_device():
                             enctype   =  "multipart/form-data"
                             action    =  "modbus-edit-device"
                             method    =  "post"
-                            onsubmit  =  "return validateForm()">"""
+                            onsubmit  =  "return validateForm()">
+                            <<<<CSRF_INPUT_HERE>>>>"""
                             
             database = "openplc.db"
             conn = create_connection(database)
@@ -1508,7 +1509,8 @@ def modbus_edit_device():
             else:
                 return_str += 'Error connecting to the database. Make sure that your openplc.db file is not corrupt.'
             
-            return return_str
+            return return_str.replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
+
             
         elif (flask.request.method == 'POST'):
             devid_db = flask.request.form.get('db_dev_id')
