@@ -1,23 +1,23 @@
 import sqlite3
 from sqlite3 import Error
 import os
-import subprocess
-import platform
-import serial.tools.list_ports
-import random
-import datetime
-import time
-import pages
-import openplc
-import monitoring as monitor
 import sys
-import ctypes
-import socket
-import mimetypes
 import ssl
-import threading
-import logging
+import time
 import errno
+import pages
+import ctypes
+import random
+import socket
+import openplc
+import logging
+import datetime
+import platform
+import mimetypes
+import threading
+import subprocess
+import monitoring as monitor
+import serial.tools.list_ports
 
 import flask
 import flask_login
@@ -605,7 +605,8 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
-        return (pages.login_head + pages.login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
+        return (pages.login_head + pages.login_body)
+        # return (pages.login_head + pages.login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
 
     username = flask.request.form['username']
     password = flask.request.form['password']
@@ -630,9 +631,11 @@ def login():
                         flask_login.login_user(user)
                         return flask.redirect(flask.url_for('dashboard'))
                     else:
-                        return (pages.login_head + pages.bad_login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
+                        return (pages.login_head + pages.bad_login_body)
+                        # return (pages.login_head + pages.bad_login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
                         
-            return (pages.login_head + pages.bad_login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
+            return (pages.login_head + pages.bad_login_body)
+            # return (pages.login_head + pages.bad_login_body).replace('<<<<CSRF_INPUT_HERE>>>>', f"<input type='hidden' value='{generate_csrf()}'  name='csrf_token'/>" )
                     
         except Error as e:
             print("error connecting to the database" + str(e))
@@ -1421,7 +1424,8 @@ def modbus_edit_device():
                             action    =  "modbus-edit-device"
                             method    =  "post"
                             onsubmit  =  "return validateForm()">
-                            <<<<CSRF_INPUT_HERE>>>>"""
+                            <<<<CSRF_INPUT_HERE>>>>
+                            """
                             
             database = "openplc.db"
             conn = create_connection(database)
