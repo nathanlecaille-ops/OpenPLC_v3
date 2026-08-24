@@ -3,21 +3,21 @@ from sqlite3 import Error
 import os
 import sys
 import ssl
-import time
-import errno
-import pages
-import ctypes
-import random
-import socket
-import openplc
-import logging
-import datetime
+import subprocess
 import platform
+import serial.tools.list_ports
+import random
+import datetime
+import time
+import pages
+import openplc
+import monitoring as monitor
+import ctypes
+import socket
 import mimetypes
 import threading
-import subprocess
-import monitoring as monitor
-import serial.tools.list_ports
+import logging
+import errno
 
 import flask
 import flask_login
@@ -257,7 +257,7 @@ def delete_persistent_file():
         os.remove("persistent.file")
     print("persistent.file removed!")
 
-
+@app.route('/generate-mbconfig')
 def generate_mbconfig():
     database = "openplc.db"
     conn = create_connection(database)
@@ -601,7 +601,7 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
-        return (pages.login_head + pages.login_body)
+        return pages.login_head + pages.login_body
 
     username = flask.request.form['username']
     password = flask.request.form['password']
@@ -626,9 +626,9 @@ def login():
                         flask_login.login_user(user)
                         return flask.redirect(flask.url_for('dashboard'))
                     else:
-                        return (pages.login_head + pages.bad_login_body)
+                        return pages.login_head + pages.bad_login_body
                         
-            return (pages.login_head + pages.bad_login_body)
+            return pages.login_head + pages.bad_login_body
                     
         except Error as e:
             print("error connecting to the database" + str(e))
@@ -1410,8 +1410,7 @@ def modbus_edit_device():
                             enctype   =  "multipart/form-data"
                             action    =  "modbus-edit-device"
                             method    =  "post"
-                            onsubmit  =  "return validateForm()">
-                            """
+                            onsubmit  =  "return validateForm()">"""
                             
             database = "openplc.db"
             conn = create_connection(database)
